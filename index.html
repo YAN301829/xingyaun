@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>犬系痕-您想我了</title>
+  <meta name="description" content="犬系痕-您想我了，简约淡雅的黑白极简卡片排版" />
+  <style>
+    /* ============ 基础与主题变量 ============ */
+    :root{
+      --bg:#f8f9fa; --card:#ffffff; --text:#1a1a1a; --sub:#8a8f98;
+      --line:#e6e8eb; --chip:#f1f2f4; --accent:#111;
+    }
+    body.dark{
+      --bg:#0c0d0e; --card:#141618; --text:#ececec; --sub:#7d828a;
+      --line:#232629; --chip:#1d2023; --accent:#ffffff;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{height:100%}
+    body{
+      background:var(--bg); color:var(--text);
+      font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+      font-weight:300; line-height:1.7; transition:background .4s,color .4s;
+      max-width:480px; margin:0 auto; position:relative;
+    }
+    /* ============ 顶栏 ============ */
+    .topbar{
+      position:sticky; top:0; z-index:50; display:flex; justify-content:space-between;
+      align-items:center; padding:14px 18px; backdrop-filter:blur(12px);
+      background:color-mix(in srgb, var(--bg) 80%, transparent);
+      font-size:11px; letter-spacing:2px; color:var(--sub);
+    }
+    .topbar .brand{font-weight:400}
+    .topbar .tools{display:flex; gap:14px}
+    .icon-btn{
+      background:none;border:1px solid var(--line);color:var(--sub);
+      width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:13px;
+      display:flex;align-items:center;justify-content:center;transition:.2s;
+    }
+    .icon-btn:active{transform:scale(.92)}
+
+    /* ============ 步骤容器 ============ */
+    .stage{padding:0 22px 120px; min-height:calc(100vh - 58px)}
+    .step{display:none; animation:fade .5s ease}
+    .step.active{display:block}
+    @keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+    .kicker{font-size:10px;letter-spacing:3px;color:var(--sub);margin:26px 0 10px}
+    .status{font-size:10px;color:#3aa66a;letter-spacing:2px}
+    .status::before{content:"●";margin-right:6px}
+
+    /* ============ 步骤1 欢迎 ============ */
+    .hero{
+      width:100%; height:300px; border-radius:16px; object-fit:cover;
+      margin-top:8px; filter:grayscale(.2);
+    }
+    .hero2{width:100%;aspect-ratio:1;border-radius:16px;object-fit:cover;margin-top:16px;filter:grayscale(1)}
+    h1.name{font-size:34px;font-weight:400;letter-spacing:2px;margin:22px 0 2px}
+    .verified{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:var(--sub);letter-spacing:1px}
+    .verified::after{content:"✓";border:1px solid var(--sub);border-radius:50%;width:13px;height:13px;
+      font-size:9px;display:inline-flex;align-items:center;justify-content:center}
+    .bio{margin-top:16px;font-size:14px;color:var(--text)}
+    .tags{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+    .tag{font-size:11px;color:var(--sub);background:var(--chip);padding:5px 11px;border-radius:20px}
+    .loc{margin-top:18px;font-size:12px;color:var(--sub)}
+
+    /* ============ 通用按钮 ============ */
+    .btn{
+      display:block;width:100%;margin-top:26px;padding:15px;border-radius:12px;
+      border:1px solid var(--accent);background:var(--accent);color:var(--bg);
+      font-size:13px;letter-spacing:3px;cursor:pointer;text-align:center;transition:.25s;
+    }
+    .btn.ghost{background:transparent;color:var(--text)}
+    .btn:active{transform:scale(.98)}
+
+    /* ============ 步骤2 个人信息 ============ */
+    .info-row{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:15px 2px;border-bottom:1px solid var(--line);font-size:14px;
+    }
+    .info-row .k{color:var(--sub);font-size:12px;letter-spacing:1px}
+    .info-row .v{color:var(--text)}
+
+    /* ============ 步骤3 我的风格 ============ */
+    .quote{font-size:15px;line-height:2;margin-top:10px;white-space:pre-line}
+    .manifesto{font-size:13px;color:var(--sub);margin-top:18px;line-height:2.1}
+
+    /* ============ 步骤4 四大栏目 ============ */
+    .cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+    .cat{
+      border:1px solid var(--line);border-radius:14px;padding:22px 16px;cursor:pointer;
+      background:var(--card);transition:.2s;
+    }
+    .cat:active{transform:scale(.97)}
+    .cat .cn{font-size:18px;letter-spacing:4px}
+    .cat .en{font-size:9px;color:var(--sub);letter-spacing:2px;margin-top:6px}
+    .panel{display:none}
+    .panel.active{display:block;animation:fade .4s ease}
+    .panel h3{font-size:15px;letter-spacing:2px;margin:20px 0 12px;font-weight:400}
+    .review,.line,.rule{
+      border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px;font-size:13px;
+    }
+    .review .from{font-size:10px;color:var(--sub);margin-top:8px;letter-spacing:1px}
+    .price{display:flex;justify-content:space-between;padding:13px 2px;border-bottom:1px dashed var(--line);font-size:13px}
+    .price b{font-weight:400}
+
+    /* ============ 底部步骤条 ============ */
+    .footer{
+      position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;
+      padding:14px 22px calc(16px + env(safe-area-inset-bottom));
+      background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(12px);
+      display:flex;justify-content:space-between;align-items:center;
+      border-top:1px solid var(--line);font-size:10px;letter-spacing:2px;color:var(--sub);
+    }
+    .footer .nav{cursor:pointer}
+    .footer .nav.dis{opacity:.25;pointer-events:none}
+    .toast{
+      position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+      background:var(--accent);color:var(--bg);padding:9px 18px;border-radius:20px;
+      font-size:12px;opacity:0;pointer-events:none;transition:.3s;z-index:99;
+    }
+    .toast.show{opacity:1}
+  </style>
+</head>
+<body>
+  <!-- 顶栏 -->
+  <div class="topbar">
+    <span class="brand">H ARCHIVE / ENTP</span>
+    <div class="tools">
+      <button class="icon-btn" id="darkBtn" title="切换深浅色">◐</button>
+      <button class="icon-btn" id="shareBtn" title="分享主页">↗</button>
+      <button class="icon-btn" id="musicBtn" title="背景音乐">♪</button>
+    </div>
+  </div>
+
+  <div class="stage">
+    <!-- STEP 01 · 欢迎 -->
+    <section class="step active" data-step="0">
+      <div class="kicker">PAGE 01 · WELCOME</div>
+      <div class="status">STATUS: ONLINE</div>
+      <!-- 把下面两张图换成自己的照片：hero 横图、lily 方图 -->
+      <img class="hero" src="https://picsum.photos/ID/crow/800/500" alt="hero" />
+      <img class="hero2" src="https://picsum.photos/ID/lily/800" alt="portrait" />
+
+      <h1 class="name">犬系痕</h1>
+      <span class="verified">VERIFIED</span>
+      <p class="bio">19 LeH 金牛 ENTP。<br/>小姐，这是我的名片。</p>
+      <div class="tags">
+        <span class="tag">#疯狗僭越</span><span class="tag">#媚骨勾引</span>
+        <span class="tag">#暧昧缱绻</span><span class="tag">#轻浮牛郎</span>
+        <span class="tag">#阴湿艳鬼</span>
+      </div>
+      <p class="loc">IP属地：雾山影 ｜ 小姐，想见我的话别走错地方啊</p>
+      <button class="btn" onclick="go(1)">START / 开始了解</button>
+    </section>
+
+    <!-- STEP 02 · 个人信息 -->
+    <section class="step" data-step="1">
+      <div class="kicker">STEP 02 / 04 · PERSONAL INFO</div>
+      <h3 style="font-weight:400;letter-spacing:3px;margin:14px 0 6px">个人信息</h3>
+      <div class="info-row"><span class="k">昵称</span><span class="v">犬系痕</span></div>
+      <div class="info-row"><span class="k">属地</span><span class="v">雾山影</span></div>
+      <div class="info-row"><span class="k">年龄</span><span class="v">19 岁</span></div>
+      <div class="info-row"><span class="k">星座</span><span class="v">金牛 ENTP</span></div>
+      <div class="info-row"><span class="k">语音</span><span class="v">低缓微哑 · 慵懒带笑</span></div>
+      <div class="info-row"><span class="k">联系方式</span>
+        <span class="v" style="cursor:pointer;text-decoration:underline" onclick="copyText('你的QQ号在这里')">企鹅 · 点击复制</span>
+      </div>
+      <button class="btn" onclick="go(2)">下一步 / MY STYLE →</button>
+    </section>
+
+    <!-- STEP 03 · 我的风格 -->
+    <section class="step" data-step="2">
+      <div class="kicker">STEP 03 / 04 · MY STYLE</div>
+      <h3 style="font-weight:400;letter-spacing:3px;margin:14px 0 6px">我的风格</h3>
+      <p class="quote">别用风格框住我吧，您该亲自来见我。</p>
+      <p class="manifesto">
+        冷冽笃定里藏着不露声色的挑逗与试探；<br/>
+        只对你露出犬牙和柔软腹部，也有张弛有度的僭越。<br/>
+        分寸是给你的特权 —— 高级的性冷淡与热烈并存。
+      </p>
+      <div class="tags">
+        <span class="tag">#僭越掌控</span><span class="tag">#嘴毒心软</span>
+        <span class="tag">#偏袒护短</span><span class="tag">#逻辑解构</span>
+        <span class="tag">#情绪价值给足</span>
+      </div>
+      <button class="btn" onclick="go(3)">下一步 / CATEGORIES →</button>
+    </section>
+
+    <!-- STEP 04 · 四大栏目 -->
+    <section class="step" data-step="3">
+      <div class="kicker">STEP 04 / 04 · CATEGORIES</div>
+
+      <!-- 栏目选择 -->
+      <div id="catHome" class="panel active">
+        <h3>请选择栏目</h3>
+        <div class="cat-grid">
+          <div class="cat" onclick="openCat('ping')"><div class="cn">板评</div><div class="en">REVIEWS</div></div>
+          <div class="cat" onclick="openCat('talk')"><div class="cn">话术</div><div class="en">SCRIPTS</div></div>
+          <div class="cat" onclick="openCat('pei')"><div class="cn">陪评</div><div class="en">PRICING</div></div>
+          <div class="cat" onclick="openCat('rule')"><div class="cn">须知</div><div class="en">RULES</div></div>
+        </div>
+      </div>
+
+      <!-- 板评 -->
+      <div id="cat-ping" class="panel">
+        <h3>板评 · 往期真实评价</h3>
+        <div class="review">"他的每句话都像经过精密手术刀剖析过一样，逻辑直接戳中我心底最纠结的事。"
+          <div class="from">— 长期包月 · 续了整整两周</div></div>
+        <div class="review">"那种亦正亦邪的反差感绝了，被狠狠拿捏住了。"
+          <div class="from">— 周末随缘单</div></div>
+        <button class="btn ghost" onclick="closeCat()">← 返回栏目选择</button>
+      </div>
+
+      <!-- 话术 -->
+      <div id="cat-talk" class="panel">
+        <h3>话术 · 日常语境示范</h3>
+        <div class="line">「醒了就吱声，这么晚还不睡？」</div>
+        <div class="line">「你只要看着我，其他交给我收拾。」</div>
+        <div class="line">「真的很喜欢我吗？还是故意想多听听我的声音。」</div>
+        <button class="btn ghost" onclick="closeCat()">← 返回栏目选择</button>
+      </div>
+
+      <!-- 陪评(价格) -->
+      <div id="cat-pei" class="panel">
+        <h3>陪评 · 预约价格</h3>
+        <div class="price"><span>单次体验</span><b>¥ XX / 小时</b></div>
+        <div class="price"><span>包周</span><b>¥ XXX</b></div>
+        <div class="price"><span>包月 / 深度陪伴</span><b>¥ XXX</b></div>
+        <p style="font-size:11px;color:var(--sub);margin-top:12px">单次可先体验，满意后再商议是否续约或长期包周/包月。</p>
+        <button class="btn" onclick="copyText('请备注三恋预约 + 你的QQ')">复制预约方式</button>
+        <button class="btn ghost" onclick="closeCat()">← 返回栏目选择</button>
+      </div>
+
+      <!-- 须知 -->
+      <div id="cat-rule" class="panel">
+        <h3>须知 · 相处规范与预约边界</h3>
+        <div class="rule">· 仅限于游戏内虚拟陪伴与文字，不涉及任何线下违规接触与现实借贷。</div>
+        <div class="rule">· 不索要三次元现实个人隐私，双方尊重与安全底线。</div>
+        <div class="rule">· 任何不适随时暂停叫停；临时变动请提前半天告知，友好改期。</div>
+        <div class="rule">· 恪守职业操守，不探听、不纠缠三次元信息。</div>
+        <button class="btn ghost" onclick="closeCat()">← 返回栏目选择</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- 底部步骤条 -->
+  <div class="footer">
+    <span class="nav dis" id="prevBtn" onclick="prev()">← 上一步</span>
+    <span id="stepLabel">STEP 01 OF 04</span>
+    <span class="nav dis" id="nextBtn">开始了解 →</span>
+  </div>
+  <div class="toast" id="toast">已复制</div>
+
+  <script>
+    let cur = 0;                 // 当前步骤 0~3
+    const total = 4;
+    const steps = document.querySelectorAll('.step');
+
+    function render(){
+      steps.forEach((s,i)=>s.classList.toggle('active', i===cur));
+      document.getElementById('stepLabel').textContent = `STEP 0${cur+1} OF 04`;
+      document.getElementById('prevBtn').classList.toggle('dis', cur===0);
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+    function go(i){ cur = i; render(); }
+    function prev(){ if(cur>0){ closeCat(); cur--; render(); } }
+
+    // 步骤4 内的栏目面板
+    function openCat(k){
+      document.querySelectorAll('#catHome,.panel').forEach(p=>p.classList.remove('active'));
+      document.getElementById('cat-'+k).classList.add('active');
+    }
+    function closeCat(){
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      document.getElementById('catHome').classList.add('active');
+    }
+
+    // 深浅色
+    const darkBtn = document.getElementById('darkBtn');
+    if(localStorage.getItem('theme')==='dark') document.body.classList.add('dark');
+    darkBtn.onclick = ()=>{
+      document.body.classList.toggle('dark');
+      localStorage.setItem('theme', document.body.classList.contains('dark')?'dark':'light');
+    };
+
+    // 复制
+    function copyText(t){
+      navigator.clipboard.writeText(t).then(showToast);
+    }
+    function showToast(){
+      const t=document.getElementById('toast'); t.classList.add('show');
+      setTimeout(()=>t.classList.remove('show'),1500);
+    }
+
+    // 分享
+    document.getElementById('shareBtn').onclick = async ()=>{
+      const url = location.href;
+      if(navigator.share){ try{ await navigator.share({title:document.title,url}); }catch(e){} }
+      else{ await navigator.clipboard.writeText(url); showToast('链接已复制'); }
+    };
+
+    // 背景音乐（可选：放一首 bgm.mp3，取消注释即可）
+    // const audio = new Audio('bgm.mp3'); audio.loop = true;
+    document.getElementById('musicBtn').onclick = ()=> showToast('背景音乐：未加载');
+
+    render();
+  </script>
+</body>
+</html>
