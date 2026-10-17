@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>犬系痕 · 轨道档案 ORBITAL ARCHIVE</title>
+<title>刑渊 · 轨道档案 ORBITAL ARCHIVE</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0b'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%23e7e5df' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23e7e5df'/%3E%3Cpath d='M2 16H12M20 16H30M16 2V12M16 20V30' stroke='%23e7e5df' stroke-width='1'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://miaoda.feishu.cn">
 <link href="https://miaoda.feishu.cn/fonts/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -254,7 +254,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
   <div class="shell">
     <div class="browser">
       <span class="bl">H</span>
-      <span class="bt"><b id="browserTitle">犬系痕-您想我了</b></span>
+      <span class="bt"><b id="browserTitle">刑渊-往后看</b></span>
       <span class="dom" id="browserDom">qian46033-cloud.github.io</span>
       <span class="sect" id="browserSect">SECTOR <b>01</b>/05</span>
       <button class="music" id="musicBtn" type="button" aria-label="背景音乐">
@@ -285,15 +285,15 @@ button{font-family:inherit;cursor:pointer;color:inherit}
                   <span class="rings ring-a"></span><span class="rings ring-b"></span><span class="rings ring-c"></span>
                   <span class="axis"></span>
                   <div class="core">
-                    <div class="avatar" id="coreAvatar">犬</div>
-                    <div class="nm" id="coreName">犬系痕</div>
+                    <div class="avatar" id="coreAvatar">刑</div>
+                    <div class="nm" id="coreName">刑渊</div>
                     <span class="badge" id="coreBadge">VERIFIED</span>
                   </div>
                 </div>
               </div>
               <div class="hero-txt">
                 <div class="eyebrow" id="eyebrow">WELCOME · 3L ARCHIVE / ENTP</div>
-                <h1 class="h-title"><span id="hName">犬系痕</span><span class="sub" id="hSub">QIAN · 追踪信号已锁定</span></h1>
+                <h1 class="h-title"><span id="hName">刑渊</span><span class="sub" id="hSub">XING · 追踪信号已锁定</span></h1>
                 <p class="quote" id="quote"></p>
                 <div class="meta" id="meta"></div>
               </div>
@@ -376,59 +376,59 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 var TPL = {
 
   /* ---- 站点 / 标题栏 ---- */
-  siteTitle: "犬系痕-您想我了",        // 浏览器标题栏文字
+  siteTitle: "刑渊-往后看",        // 浏览器标题栏文字
   domain: "qian46033-cloud.github.io",  // 浏览器地址栏文字（可填你 GitHub Pages 地址）
-  siteName: "犬系痕",                    // 页面主名（第 1 页大标题 + 轨道中心）
+  siteName: "刑渊",                    // 页面主名（第 1 页大标题 + 轨道中心）
 
   /* ---- 导航 5 个分区的名字 ---- */
-  nav: ["初见","档案","风格","情景","栏目"],
+  nav: ["印象","档案","风格","情景","栏目"],
 
   /* ---- 第 1 页 · 初见 ---- */
   welcome: {
-    avatar: "犬",                        // 轨道中心的圆形符号（可换成一个字或表情）
+    avatar: "刑",                        // 轨道中心的圆形符号（可换成一个字或表情）
     verified: "VERIFIED",                // 认证徽章文字
     state: "ONLINE",                     // 在线状态
     orbitLbl: "// ORBITAL CORE",         // 轨道左上角小标签
     eyebrow: "WELCOME · 3L ARCHIVE / ENTP",
-    sub: "QIAN · 追踪信号已锁定",         // 大标题下的小字
-    quote: "小姐，这是我的名片。别用风格框住我吧，您该亲自来见我。",  // 签名文案
-    quoteEm: ["别用风格框住我吧"],        // 签名中要高亮（加粗）的词，可填多个
+    sub: "XING · 追踪信号已锁定",         // 大标题下的小字
+    quote: "淡漠的人生需要猛药自愈。",  // 签名文案
+    quoteEm: ["了解我的方式只是看吗？"],        // 签名中要高亮（加粗）的词，可填多个
     meta: [                              // 属性标签：{t:文字, on:是否反白高亮}
-      {t:"AGE 019"},
-      {t:"金牛 TAURUS"},
-      {t:"ENTP", on:true},
-      {t:"IP · 雾山影"}
+      {t:"AGE 023"},
+      {t:"摩羯 T"},
+      {t:"INTJ", on:true},
+      {t:"IP · 墨菲"}
     ]
   },
 
   /* ---- 第 2 页 · 档案：k=左标签 v=内容 note=右下角小注释 ---- */
   dossier: [
-    {k:"NAME",    v:"犬系痕", note:"QIAN · 3L ARCHIVE"},
+    {k:"NAME",    v:"刑渊", note:"QIAN · 3L ARCHIVE"},
     {k:"STATUS",  v:"AVAILABLE · ONLINE", note:"// 可被追踪"},
-    {k:"SERVER",  v:"ios", note:"// 游戏伺服"},
-    {k:"OUTFITS", v:"0号书虫 · 蝙蝠斗 or 二级白", note:"// 穿搭方案"},
-    {k:"HOURS",   v:"工作日 18:00-23:00 · 周末随缘", note:"// 在线时段"},
-    {k:"IP 属地", v:"雾山影", note:"// 追踪信号源"}
+    {k:"SERVER",  v:"ios", note:"// 游戏服"},
+    {k:"OUTFITS", v:"负0巫师/初始 · 蝙蝠斗 or 二级白", note:"// 穿搭方案"},
+    {k:"HOURS",   v:"工作日 19:00-23:00 · 周末随缘", note:"// 在线时段"},
+    {k:"IP 属地", v:"福建", note:"// 追踪信号源"}
   ],
 
   /* ---- 第 3 页 · 风格：label=标签名 note=一句说明 ---- */
   styles: [
-    {label:"白话疯犬", note:"直给 · 犬系直觉"},
-    {label:"媚骨勾引", note:"柔软 · 迂回靠近"},
-    {label:"暧昧缱绻", note:"试探 · 若即若离"},
-    {label:"轻浮牛郎", note:"玩味 · 四两拨千斤"},
-    {label:"阴湿艳鬼", note:"暗面 · 冷艳张力"},
-    {label:"爱食掺揉", note:"浓度 · 混合配方"}
+    {label:"淡漠剖析", note:"直接 · 看到本性"},
+    {label:"高恋疯病", note:"渴望 · 追求热情"},
+    {label:"暧昧缱绻", note:"温柔 · 羞耻痴缠"},
+    {label:"黄暴恶劣", note:"玩味 · 击破敏感"},
+    {label:"DOM", note:"性感"},
+    {label:"白话", note:"理解 · 足够直白"}
   ],
 
   /* ---- 第 4 页 · 情景：nm=名字 en=英文标签 line=台词 ---- */
   scenes: [
-    {nm:"白话疯犬", en:"OVERSTEP & DOMINANCE", line:"敢把我赶出你的人生就等着被狗爪子扇吧"},
-    {nm:"媚骨勾引", en:"SEDUCTION & TEASE", line:"眼泪不小心打湿了衣服，想要挡住却弄巧成拙，不小心将衣领又扯开了些"},
-    {nm:"暧昧缱绻", en:"INTIMACY & AMBIGUITY", line:"吃独食可不是什么好习惯，劳烦您张张口啊"},
-    {nm:"轻浮牛郎", en:"FLIRTATION & ROMANEE", line:"您还是别打趣我了。真的很喜欢我吗？那就为我开一瓶罗曼尼康帝吧"},
-    {nm:"阴湿艳鬼", en:"OBSESSION & ENTWINED", line:"从背后环住你的感觉真好啊，你该被我的痴缠扰一辈子的"},
-    {nm:"爱食掺揉", en:"APPETITE & DESIRE", line:"食欲是爱欲的外化"}
+    {nm:"淡漠剖析", en:"OVERSTEP & DOMINANCE", line:"你的犹豫泯然众人，由我陪着你"},
+    {nm:"高恋疯病", en:"SEDUCTION & TEASE", line:"你的情绪是供给我的食物，享受吧，我的注视是你的战利品"},
+    {nm:"暧昧缱绻", en:"INTIMACY & AMBIGUITY", line:"微微抬腿，我有些渴了，再努力些，喂饱我吧"},
+    {nm:"黄暴恶劣", en:"FLIRTATION & ROMANEE", line:"不敢承认自己人性本贱？还是s货在无力渴望从没达到的刺激"},
+    {nm:"DOM", en:"OBSESSION & ENTWINED", line:"抬起头,你的身体，你的任性，交给我"},
+    {nm:"白话", en:"APPETITE & DESIRE", line:"我的目的是你的依赖回应"}
   ],
 
   /* ---- 第 5 页 · 栏目：cn=中文名 en=英文名 ----
@@ -441,9 +441,9 @@ var TPL = {
     {cn:"板评", en:"BOARD REVIEWS", links:[]},
     {cn:"话术", en:"SCRIPTS", links:[]},
     {cn:"陪评", en:"COMPANION", links:[]},
-    {cn:"排单表", en:"SCHEDULE", links:[]}
+    {cn:"卡片", en:"SCHEDULE", links:[]}
   ],
-  poem: ["要好好操心爱的人啊", "眼泪为我流尽吧"],   // 栏目页底部两行抒情
+  poem: ["热情燃起星火，照亮无心病的深渊。"],   // 栏目页底部两行抒情
   inputPlaceholder: "输入您的称呼 / NAME",         // 输入框占位文字
   cta: "ENTER / 进入站点",                          // 栏目页按钮文字
 
