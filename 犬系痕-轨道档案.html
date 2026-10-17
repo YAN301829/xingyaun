@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>犬系痕 · 轨道档案 ORBITAL ARCHIVE</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0b'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%23e7e5df' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23e7e5df'/%3E%3Cpath d='M2 16H12M20 16H30M16 2V12M16 20V30' stroke='%23e7e5df' stroke-width='1'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link href="https://miaoda.feishu.cn/fonts/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<!--
+══════════════════════════════════════════════════════════════════
+  轨道档案 · GitHub Pages 模板
+  使用说明：
+  1. 改「文字」：所有文字都在下方 <script> 里的 TPL 配置对象中，
+     改一处即可全局更新，不用动 HTML 结构。
+  2. 加「背景音乐 BGM」：把音频文件放到仓库 assets/ 目录（或填
+     在线 mp3 网址），然后在 TPL.bgm 里 enable 改为 true 并填 url。
+     点页面右上角的 BGM 按钮播放/暂停（不会自动播放，需点一下）。
+  3. 部署到 GitHub：把本文件（和 assets/ 音频）推到一个仓库，
+     打开 Settings → Pages → 选 Branch 为 main，即可通过
+     https://你的用户名.github.io/仓库名/ 访问。
+══════════════════════════════════════════════════════════════════
+-->
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --bg:#0a0a0b;--bg2:#0e0f11;--panel:#111214;--panel2:#16171a;
+  --line:rgba(231,229,223,.10);--line2:rgba(231,229,223,.24);
+  --ink:#e7e5df;--ink-soft:#b9b8b2;--dim:#7d7c76;--faint:#4c4b47;
+  --mono:"JetBrains Mono","SFMono-Regular",ui-monospace,Menlo,monospace;
+  --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:radial-gradient(120% 55% at 50% -8%,rgba(231,229,223,.06),transparent 58%),var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;min-height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:#e7e5df;color:#0a0a0b}
+button{font-family:inherit;cursor:pointer;color:inherit}
+.mono{font-family:var(--mono);letter-spacing:.04em;font-feature-settings:"tnum"}
+:focus-visible{outline:2px solid var(--ink-soft);outline-offset:2px}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.045;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+.dim{color:var(--dim)}
+.soft{color:var(--ink-soft)}
+
+/* ============ FIXED DECOR ============ */
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(231,229,223,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(231,229,223,.045) 1px,transparent 1px);
+  background-size:42px 42px;
+  -webkit-mask-image:radial-gradient(130% 90% at 50% 0%,#000 40%,transparent 100%);
+  mask-image:radial-gradient(130% 90% at 50% 0%,#000 40%,transparent 100%)}
+.bg-rings{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(circle at 82% -6%,transparent 0,transparent 170px,rgba(231,229,223,.07) 170px,rgba(231,229,223,.07) 171px,transparent 172px),
+    radial-gradient(circle at 82% -6%,transparent 0,transparent 330px,rgba(231,229,223,.05) 330px,rgba(231,229,223,.05) 331px,transparent 332px)}
+.corner{position:fixed;z-index:1;width:16px;height:16px;pointer-events:none;opacity:.7}
+.corner::before,.corner::after{content:"";position:absolute;background:var(--line2)}
+.corner::before{left:50%;top:0;width:1px;height:100%}
+.corner::after{top:50%;left:0;height:1px;width:100%}
+.c-tl{top:56px;left:10px}.c-tr{top:56px;right:10px}.c-bl{bottom:112px;left:10px}.c-br{bottom:112px;right:10px}
+
+/* ============ SHELL ============ */
+.shell{position:relative;z-index:2;height:100dvh;display:flex;flex-direction:column;max-width:1000px;margin:0 auto}
+
+/* ============ BROWSER BAR ============ */
+.browser{flex:none;display:flex;align-items:center;gap:12px;height:46px;padding:0 14px;
+  border:1px solid var(--line);border-top:none;border-radius:0 0 10px 10px;background:rgba(14,15,17,.8);
+  font-family:var(--mono);font-size:12px;color:var(--ink-soft)}
+.browser .bl{width:16px;height:16px;border:1px solid var(--dim);border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:var(--dim)}
+.browser .bt{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;min-width:0}
+.browser .bt b{color:var(--ink);font-weight:500}
+.browser .dom{color:var(--faint);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;min-width:0}
+.browser .sect{margin-left:auto;flex:none;font-size:11px;color:var(--dim);white-space:nowrap}
+.browser .sect b{color:var(--ink)}
+/* BGM button */
+.music{flex:none;display:flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--line2);border-radius:8px;background:rgba(22,23,26,.6);font-family:var(--mono);font-size:10px;color:var(--ink-soft);transition:.2s;letter-spacing:.08em}
+.music svg{width:12px;height:12px;fill:currentColor;flex:none}
+.music:hover{border-color:var(--ink);color:var(--ink)}
+.music[data-on]{color:var(--bg);background:var(--ink);border-color:var(--ink)}
+.music[data-on] svg{animation:noteSpin 2.2s linear infinite}
+@keyframes noteSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* ============ NAV ============ */
+.nav-top{flex:none;display:flex;gap:0;margin:12px 0 14px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:rgba(17,18,20,.7)}
+.nav-top button{flex:1;text-align:center;padding:9px 3px;border:0;border-right:1px solid var(--line);background:transparent;font-family:var(--mono);font-size:11px;color:var(--dim);transition:.18s}
+.nav-top button:last-child{border-right:none}
+.nav-top button small{display:block;font-size:8px;color:var(--faint);letter-spacing:.1em;font-family:var(--sans)}
+.nav-top button[data-on]{color:var(--bg);background:var(--ink)}
+.nav-top button[data-on] small{color:var(--bg);opacity:.65}
+
+/* ============ STAGE ============ */
+.stage{flex:1;min-height:0;overflow:hidden;position:relative}
+.deck{display:flex;height:100%;transition:transform .62s cubic-bezier(.72,.01,.27,1);will-change:transform}
+.page{flex:0 0 100%;width:100%;height:100%;overflow-y:auto;overflow-x:hidden;position:relative;
+  display:flex;align-items:center;justify-content:center;padding:6px 18px 8px;
+  -webkit-overflow-scrolling:touch}
+.page>.in{width:100%;max-width:640px}
+.page.reveal>.in{animation:pageIn .5s ease both}
+@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.deck .page{box-shadow:0 0 0 0 transparent}
+.deck.slide-left .page:first-child{box-shadow:0 0 60px rgba(0,0,0,.5)}
+
+/* ============ SHARED PANEL ============ */
+.frame{position:relative;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,rgba(22,23,26,.9),rgba(14,15,17,.9));overflow:hidden}
+.frame::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(231,229,223,.28),transparent);z-index:1}
+.frame .fhd{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--dim)}
+.frame .fhd .dot{width:8px;height:8px;border-radius:50%;border:1px solid var(--line2);flex:none}
+.frame .fhd .dot[on]{background:var(--ink);border-color:var(--ink)}
+.frame .fhd .fn{margin-right:auto;color:var(--ink-soft)}
+.frame .fhd .st{font-size:10px;color:var(--faint);letter-spacing:.12em}
+
+/* ============ PAGE 01 WELCOME ============ */
+.hero{display:grid;grid-template-columns:1fr;gap:16px;align-items:center}
+.orbit-view{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;min-height:168px;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 50% 46%,transparent 0,transparent 64px,rgba(231,229,223,.08) 64px,rgba(231,229,223,.08) 65px,transparent 66px),
+    radial-gradient(circle at 50% 46%,transparent 0,transparent 104px,rgba(231,229,223,.11) 104px,rgba(231,229,223,.11) 105px,transparent 106px),
+    linear-gradient(180deg,var(--bg2),var(--bg))}
+.orbit-view::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 46%,rgba(231,229,223,.10),transparent 56%);pointer-events:none}
+.orbit-view .tl{position:absolute;top:10px;left:14px;font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:.16em;z-index:2}
+.orbit-view .tr{position:absolute;top:10px;right:14px;font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:.12em;z-index:2}
+.orbit-view .tr em{font-style:normal;color:var(--ink)}
+#orbitCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.orbit-core{position:relative;text-align:center;z-index:1}
+.orbit-core .rings{position:absolute;inset:0;margin:auto;border-radius:50%;pointer-events:none}
+.orbit-core .ring-a{width:128px;height:128px;border:1px dashed rgba(231,229,223,.28);animation:spin 26s linear infinite}
+.orbit-core .ring-b{width:194px;height:194px;border:1px solid rgba(231,229,223,.12)}
+.orbit-core .ring-c{width:258px;height:258px;border:1px dashed rgba(231,229,223,.06);animation:spin 60s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.orbit-core .core{position:relative;z-index:2;width:104px;height:104px;margin:0 auto;border-radius:50%;border:1px solid var(--line2);
+  background:radial-gradient(circle at 35% 30%,#2a2b2e,#141518 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 0 40px rgba(231,229,223,.06)}
+.orbit-core .core .avatar{width:38px;height:38px;border-radius:50%;border:1px solid var(--line2);margin-bottom:5px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;background:linear-gradient(135deg,#222326,#101114)}
+.orbit-core .core .nm{font-size:18px;font-weight:900;letter-spacing:.06em}
+.orbit-core .core .badge{display:inline-block;margin-top:3px;padding:1px 7px;font-family:var(--mono);font-size:8px;letter-spacing:.14em;border:1px solid var(--line2);border-radius:20px;color:var(--ink-soft)}
+.orbit-core .axis{position:absolute;inset:0;pointer-events:none}
+.orbit-core .axis::before,.orbit-core .axis::after{content:"";position:absolute;background:rgba(231,229,223,.05)}
+.orbit-core .axis::before{left:50%;top:8px;bottom:8px;width:1px}
+.orbit-core .axis::after{top:50%;left:8px;right:8px;height:1px}
+.hero-txt{display:flex;flex-direction:column;gap:11px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--dim)}
+.eyebrow .bar{color:var(--ink)}
+.h-title{font-size:32px;font-weight:900;line-height:1.18;letter-spacing:.02em;text-wrap:balance}
+.h-title .sub{display:block;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.2em;color:var(--dim);margin-top:6px}
+.quote{font-size:14px;color:var(--ink-soft);line-height:1.8}
+.quote b{color:var(--ink)}
+.quote .hl{background:linear-gradient(90deg,rgba(231,229,223,.14),transparent 90%);padding:0 4px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;font-family:var(--mono);font-size:10px;color:var(--ink-soft)}
+.meta .mi{padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:rgba(22,23,26,.5)}
+.meta .mi.on{color:var(--bg);background:var(--ink);border-color:var(--ink);font-weight:700}
+
+/* ============ PAGE 02 DOSSIER ============ */
+.data-grid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line)}
+.drow{display:grid;grid-template-columns:92px 1fr;gap:12px;padding:11px 16px;background:var(--panel);align-items:center}
+.drow .k{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.1em}
+.drow .v{font-size:14px;color:var(--ink)}
+.drow .v small{display:block;font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:.12em}
+.drow .v .ok{color:var(--ink);font-weight:700}
+
+/* ============ PAGE 03 STYLE ============ */
+.style-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:14px}
+.style-card{border:1px solid var(--line);border-radius:11px;padding:13px;background:rgba(22,23,26,.5);display:flex;flex-direction:column;gap:7px}
+.style-card .no{font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:.16em}
+.style-card .label{font-size:14px;font-weight:700}
+.style-card .note{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:.06em}
+
+/* ============ PAGE 04 SCENES ============ */
+.scene-list{display:flex;flex-direction:column;gap:9px;padding:14px}
+.scene{border:1px solid var(--line);border-radius:11px;padding:12px 14px;background:rgba(22,23,26,.5)}
+.scene .sh{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.scene .sh .no{font-family:var(--mono);font-size:10px;color:var(--faint)}
+.scene .sh .nm{font-family:var(--mono);font-size:11px;color:var(--ink-soft);letter-spacing:.04em}
+.scene .sh .en{margin-left:auto;font-family:var(--mono);font-size:8px;color:var(--faint);letter-spacing:.12em}
+.scene .line{font-size:13px;color:var(--ink);line-height:1.7}
+.scene .line::before{content:"“";color:var(--dim)}.scene .line::after{content:"”";color:var(--dim)}
+
+/* ============ PAGE 05 SECTIONS ============ */
+.section-list{display:flex;flex-direction:column;padding:6px 14px 0}
+.srow{display:flex;align-items:center;gap:14px;padding:12px 4px;border-bottom:1px solid var(--line);cursor:pointer;transition:.18s;background:none;border-left:0;border-right:0;border-top:0;width:100%;text-align:left}
+.srow:last-child{border-bottom:none}
+.srow:hover{background:rgba(231,229,223,.03)}
+.srow .no{font-family:var(--mono);font-size:10px;color:var(--faint)}
+.srow .cn{font-size:15px;font-weight:700}
+.srow .en{margin-left:4px;font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:.1em}
+.srow .go{margin-left:auto;font-size:15px;color:var(--dim)}
+.poem{padding:12px 14px 2px;text-align:center;font-size:14px;color:var(--ink-soft);line-height:1.9}
+.poem span{display:block}
+.field{display:flex;gap:10px;margin:12px 14px 10px}
+.field input{flex:1;background:transparent;border:1px solid var(--line);border-radius:9px;padding:12px 14px;color:var(--ink);font-family:var(--mono);font-size:14px;outline:none;transition:.2s;min-width:0}
+.field input:focus{border-color:var(--line2)}
+.field input::placeholder{color:var(--faint)}
+.enter{display:flex;margin:0 14px 12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;flex:1;padding:14px 18px;border:1px solid var(--ink);border-radius:10px;background:var(--ink);color:var(--bg);font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.1em;transition:.2s;min-height:50px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(231,229,223,.12)}
+.btn .arr{font-size:15px;line-height:1}
+
+/* ============ DOC LINKS (栏目子页 · 金山文档跳转) ============ */
+.link-list{display:flex;flex-direction:column;padding:6px 0}
+.link-row{display:flex;align-items:center;gap:12px;padding:15px 16px;border-bottom:1px solid var(--line);cursor:pointer;transition:.18s;color:inherit;text-decoration:none;position:relative}
+.link-row:last-child{border-bottom:none}
+.link-row:hover{background:rgba(231,229,223,.05)}
+.link-row .ic{flex:none;width:34px;height:34px;border:1px solid var(--line2);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--ink-soft)}
+.link-row .ic svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5}
+.link-row .bd{flex:1;min-width:0}
+.link-row .bd .t{font-size:14px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.link-row .bd .u{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:.05em;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-top:2px}
+.link-row .go{flex:none;font-size:15px;color:var(--dim)}
+.link-row .del{flex:none;width:28px;height:28px;border-radius:6px;border:1px solid transparent;background:none;color:var(--faint);font-size:15px;line-height:1;cursor:pointer}
+.link-row .del:hover{color:var(--ink);border-color:var(--line2)}
+.link-empty{display:none;padding:28px 16px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.08em}
+.link-list.empty + .link-empty{display:block}
+.detail-actions{display:flex;gap:10px;padding:0 14px 12px}
+.detail-actions .btn.ghost{flex:1;min-height:46px}
+
+/* ============ PAGER ============ */
+.pager{flex:none;padding:12px 18px 18px;border-top:1px solid var(--line);background:linear-gradient(180deg,rgba(10,10,11,.4),rgba(10,10,11,.9) 40%)}
+.prog-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--dim);margin-bottom:10px}
+.prog-label b{color:var(--ink)}
+.path{display:flex;align-items:center;gap:0;margin-bottom:12px}
+.path .seg{flex:1;height:1px;background:var(--line)}
+.path .seg[on]{background:var(--ink)}
+.path .node{flex:none;width:11px;height:11px;border-radius:50%;border:1px solid var(--line2);background:var(--bg);margin:0 -4px;position:relative;cursor:pointer;transition:.2s}
+.path .node[on]{background:var(--ink);border-color:var(--ink)}
+.path .node[on]::before{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(231,229,223,.3)}
+.nav-btns{display:flex;gap:10px}
+.nav-btns .btn{flex:1;min-height:48px}
+.nav-btns .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line2)}
+.nav-btns .btn.ghost:hover{background:rgba(231,229,223,.06);box-shadow:none;transform:none}
+.nav-btns .btn .cap{display:block;font-size:8px;font-weight:400;letter-spacing:.14em;color:var(--dim);margin-bottom:2px}
+
+/* ============ RESPONSIVE ============ */
+@media(min-width:768px){
+  .page{padding:10px 40px}
+  .hero{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+  .orbit-view{min-height:320px}
+  .style-grid{grid-template-columns:repeat(3,1fr)}
+  .data-grid{grid-template-columns:1fr 1fr}
+  .drow{border:none}
+  .scene-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  .orbit-core .ring-a,.orbit-core .ring-c{animation:none}
+  .deck{transition:none}
+  .music[data-on] svg{animation:none}
+}
+</style>
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-rings" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <span class="corner c-tl" aria-hidden="true"></span>
+  <span class="corner c-tr" aria-hidden="true"></span>
+  <span class="corner c-bl" aria-hidden="true"></span>
+  <span class="corner c-br" aria-hidden="true"></span>
+
+  <div class="shell">
+    <div class="browser">
+      <span class="bl">H</span>
+      <span class="bt"><b id="browserTitle">犬系痕-您想我了</b></span>
+      <span class="dom" id="browserDom">qian46033-cloud.github.io</span>
+      <span class="sect" id="browserSect">SECTOR <b>01</b>/05</span>
+      <button class="music" id="musicBtn" type="button" aria-label="背景音乐">
+        <svg viewBox="0 0 24 24"><path d="M9 18.5a3 3 0 1 1-2-2.83V5.5a.5.5 0 0 1 .38-.48L19.4 2.1a.5.5 0 0 1 .6.48v11.6a3 3 0 1 1-2-2.83V6.9L9 8.6v9.9Z"/></svg>
+        <span>BGM</span>
+      </button>
+    </div>
+
+    <nav class="nav-top" id="navTop" aria-label="分区导航">
+      <button type="button" data-step="1" data-target="welcome">01<small id="navCn1">初见</small></button>
+      <button type="button" data-step="2" data-target="info">02<small id="navCn2">档案</small></button>
+      <button type="button" data-step="3" data-target="style">03<small id="navCn3">风格</small></button>
+      <button type="button" data-step="4" data-target="scenes">04<small id="navCn4">情景</small></button>
+      <button type="button" data-step="5" data-target="cats">05<small id="navCn5">栏目</small></button>
+    </nav>
+
+    <main class="stage">
+      <div class="deck" id="deck">
+
+        <section class="page" id="page-welcome">
+          <div class="in">
+            <div class="hero">
+              <div class="orbit-view">
+                <canvas id="orbitCanvas" aria-hidden="true"></canvas>
+                <span class="tl" id="orbitLbl">// ORBITAL CORE</span>
+                <span class="tr" id="orbitState">STATE <em>ONLINE</em></span>
+                <div class="orbit-core">
+                  <span class="rings ring-a"></span><span class="rings ring-b"></span><span class="rings ring-c"></span>
+                  <span class="axis"></span>
+                  <div class="core">
+                    <div class="avatar" id="coreAvatar">犬</div>
+                    <div class="nm" id="coreName">犬系痕</div>
+                    <span class="badge" id="coreBadge">VERIFIED</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hero-txt">
+                <div class="eyebrow" id="eyebrow">WELCOME · 3L ARCHIVE / ENTP</div>
+                <h1 class="h-title"><span id="hName">犬系痕</span><span class="sub" id="hSub">QIAN · 追踪信号已锁定</span></h1>
+                <p class="quote" id="quote"></p>
+                <div class="meta" id="meta"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-info">
+          <div class="in">
+            <div class="frame">
+              <div class="fhd"><span class="dot" on></span><span class="fn" id="infoFn">PERSONAL_INFO.dat</span><span class="st">// READ-ONLY</span></div>
+              <div class="data-grid" id="dataGrid"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-style">
+          <div class="in">
+            <div class="frame">
+              <div class="fhd"><span class="dot"></span><span class="fn" id="styleFn">CORE_ESSENCE.idx</span><span class="st" id="styleSt">// 06 ENTRIES</span></div>
+              <div class="style-grid" id="styleGrid"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-scenes">
+          <div class="in">
+            <div class="frame">
+              <div class="fhd"><span class="dot"></span><span class="fn" id="sceneFn">SCENARIO_SIM.log</span><span class="st" id="sceneSt">// 06 LINES</span></div>
+              <div class="scene-list" id="sceneList"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-cats">
+          <div class="in">
+            <div class="frame">
+              <div class="fhd"><span class="dot"></span><span class="fn" id="catsFn">CATEGORIES · DIRECTORY</span><span class="st" id="catsSt">// 05 SECTIONS</span></div>
+              <div class="section-list" id="sectionList"></div>
+            </div>
+            <div class="poem" id="poem"></div>
+            <div class="field"><input type="text" id="handleInput" placeholder="" aria-label="输入您的称呼"></div>
+            <div class="enter"><button class="btn" id="enterBtn">ENTER / 进入站点&nbsp;<span class="arr">→</span></button></div>
+          </div>
+        </section>
+
+        <!-- ===== 栏目子页 · 金山文档链接（点开任一栏目进入） ===== -->
+        <section class="page" id="page-detail">
+          <div class="in">
+            <div class="frame">
+              <div class="fhd"><span class="dot" on></span><span class="fn" id="detailFn">须知 · RULES</span><span class="st">// 金山文档 DOC LINKS</span></div>
+              <div class="link-list" id="linkList" data-c="links"></div>
+              <div class="link-empty">还没有文档链接 · 点下方「添加文档链接」</div>
+            </div>
+            <div class="detail-actions">
+              <button class="btn ghost" id="addLinkBtn" type="button">＋ 添加文档链接 / ADD</button>
+            </div>
+            <div class="enter"><button class="btn" id="backBtn" type="button">← 返回栏目 / BACK</button></div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <div class="pager">
+      <div class="prog-label">STEP <b id="stepNo">01</b> OF 05 · <span id="stepName">WELCOME</span></div>
+      <div class="path" id="path"></div>
+      <div class="nav-btns">
+        <button class="btn ghost" id="prevBtn">← PREV</button>
+        <button class="btn" id="nextBtn">NEXT<span class="cap" id="nextCap">下一页 · 档案</span>→</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   ★ 模板配置：这里就是所有文字，改这里即可，其它都不用动 ★
+   每个字段都标了注释。删除某项即不显示该项。
+   ═══════════════════════════════════════════════════════════════ */
+var TPL = {
+
+  /* ---- 站点 / 标题栏 ---- */
+  siteTitle: "犬系痕-您想我了",        // 浏览器标题栏文字
+  domain: "qian46033-cloud.github.io",  // 浏览器地址栏文字（可填你 GitHub Pages 地址）
+  siteName: "犬系痕",                    // 页面主名（第 1 页大标题 + 轨道中心）
+
+  /* ---- 导航 5 个分区的名字 ---- */
+  nav: ["初见","档案","风格","情景","栏目"],
+
+  /* ---- 第 1 页 · 初见 ---- */
+  welcome: {
+    avatar: "犬",                        // 轨道中心的圆形符号（可换成一个字或表情）
+    verified: "VERIFIED",                // 认证徽章文字
+    state: "ONLINE",                     // 在线状态
+    orbitLbl: "// ORBITAL CORE",         // 轨道左上角小标签
+    eyebrow: "WELCOME · 3L ARCHIVE / ENTP",
+    sub: "QIAN · 追踪信号已锁定",         // 大标题下的小字
+    quote: "小姐，这是我的名片。别用风格框住我吧，您该亲自来见我。",  // 签名文案
+    quoteEm: ["别用风格框住我吧"],        // 签名中要高亮（加粗）的词，可填多个
+    meta: [                              // 属性标签：{t:文字, on:是否反白高亮}
+      {t:"AGE 019"},
+      {t:"金牛 TAURUS"},
+      {t:"ENTP", on:true},
+      {t:"IP · 雾山影"}
+    ]
+  },
+
+  /* ---- 第 2 页 · 档案：k=左标签 v=内容 note=右下角小注释 ---- */
+  dossier: [
+    {k:"NAME",    v:"犬系痕", note:"QIAN · 3L ARCHIVE"},
+    {k:"STATUS",  v:"AVAILABLE · ONLINE", note:"// 可被追踪"},
+    {k:"SERVER",  v:"ios", note:"// 游戏伺服"},
+    {k:"OUTFITS", v:"0号书虫 · 蝙蝠斗 or 二级白", note:"// 穿搭方案"},
+    {k:"HOURS",   v:"工作日 18:00-23:00 · 周末随缘", note:"// 在线时段"},
+    {k:"IP 属地", v:"雾山影", note:"// 追踪信号源"}
+  ],
+
+  /* ---- 第 3 页 · 风格：label=标签名 note=一句说明 ---- */
+  styles: [
+    {label:"白话疯犬", note:"直给 · 犬系直觉"},
+    {label:"媚骨勾引", note:"柔软 · 迂回靠近"},
+    {label:"暧昧缱绻", note:"试探 · 若即若离"},
+    {label:"轻浮牛郎", note:"玩味 · 四两拨千斤"},
+    {label:"阴湿艳鬼", note:"暗面 · 冷艳张力"},
+    {label:"爱食掺揉", note:"浓度 · 混合配方"}
+  ],
+
+  /* ---- 第 4 页 · 情景：nm=名字 en=英文标签 line=台词 ---- */
+  scenes: [
+    {nm:"白话疯犬", en:"OVERSTEP & DOMINANCE", line:"敢把我赶出你的人生就等着被狗爪子扇吧"},
+    {nm:"媚骨勾引", en:"SEDUCTION & TEASE", line:"眼泪不小心打湿了衣服，想要挡住却弄巧成拙，不小心将衣领又扯开了些"},
+    {nm:"暧昧缱绻", en:"INTIMACY & AMBIGUITY", line:"吃独食可不是什么好习惯，劳烦您张张口啊"},
+    {nm:"轻浮牛郎", en:"FLIRTATION & ROMANEE", line:"您还是别打趣我了。真的很喜欢我吗？那就为我开一瓶罗曼尼康帝吧"},
+    {nm:"阴湿艳鬼", en:"OBSESSION & ENTWINED", line:"从背后环住你的感觉真好啊，你该被我的痴缠扰一辈子的"},
+    {nm:"爱食掺揉", en:"APPETITE & DESIRE", line:"食欲是爱欲的外化"}
+  ],
+
+  /* ---- 第 5 页 · 栏目：cn=中文名 en=英文名 ----
+       点开每个栏目会进入一个「金山文档链接」页。links 里填：
+       {title:"显示标题", url:"金山文档网址(https://www.kdocs.cn/l/…)"}
+       例：links:[{title:"须知一", url:"https://www.kdocs.cn/l/你的文档ID"}] ，
+       填几个就显示几个可点击跳转的条目；不填则显示空态，可在页内「添加」。 */
+  sections: [
+    {cn:"须知", en:"RULES", links:[]},
+    {cn:"板评", en:"BOARD REVIEWS", links:[]},
+    {cn:"话术", en:"SCRIPTS", links:[]},
+    {cn:"陪评", en:"COMPANION", links:[]},
+    {cn:"排单表", en:"SCHEDULE", links:[]}
+  ],
+  poem: ["要好好操心爱的人啊", "眼泪为我流尽吧"],   // 栏目页底部两行抒情
+  inputPlaceholder: "输入您的称呼 / NAME",         // 输入框占位文字
+  cta: "ENTER / 进入站点",                          // 栏目页按钮文字
+
+  /* ---- 背景音乐 BGM ----
+     1) 把音频文件放进本文件同级的 assets/ 目录（如 assets/bgm.mp3），
+        或将在线音频网址填到 url。
+     2) enable 改为 true 即可。播放需用户点右上角 BGM 按钮（不会自动播）。
+     3) 不想要音乐：enable 保持 false，右上角按钮会自动隐藏。 */
+  bgm: { enable:false, url:"assets/bgm.mp3", label:"ORBITAL LOOP" }
+};
+
+/* ================================================================
+   下方是渲染与交互代码，一般不需要修改。
+   ================================================================ */
+var ORDER = ["welcome","info","style","scenes","cats"];
+var NAMES = {welcome:"WELCOME",info:"PERSONAL INFO",style:"MY STYLE",scenes:"SCENARIOS",cats:"CATEGORIES"};
+
+function html(rows, fn){ return rows.map(function(r,i){ return fn(r,i); }).join(""); }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+/* ---- render text from TPL ---- */
+(function(){
+  document.title = TPL.siteTitle;
+  document.getElementById("browserTitle").textContent = TPL.siteTitle;
+  document.getElementById("browserDom").textContent = TPL.domain;
+  TPL.nav.forEach(function(n,i){ document.getElementById("navCn"+(i+1)).textContent = n; });
+
+  var w = TPL.welcome;
+  document.getElementById("coreAvatar").textContent = w.avatar;
+  document.getElementById("coreName").textContent = TPL.siteName;
+  document.getElementById("coreBadge").textContent = w.verified;
+  document.getElementById("orbitState").innerHTML = "STATE <em>" + esc(w.state) + "</em>";
+  document.getElementById("orbitLbl").textContent = w.orbitLbl;
+  document.getElementById("eyebrow").innerHTML = '<span class="bar">//</span>&nbsp;' + esc(w.eyebrow);
+  document.getElementById("hName").textContent = TPL.siteName;
+  document.getElementById("hSub").textContent = w.sub;
+  var q = esc(w.quote);
+  (w.quoteEm||[]).forEach(function(t){ q = q.replace(esc(t), "<b>"+esc(t)+"</b>"); });
+  document.getElementById("quote").innerHTML = q;
+  document.getElementById("meta").innerHTML = html(w.meta||[], function(m){
+    return '<span class="mi'+(m.on?" on":"")+'">'+esc(m.t)+'</span>';
+  });
+
+  document.getElementById("infoFn").textContent = TPL.dossierFile || "PERSONAL_INFO.dat";
+  document.getElementById("dataGrid").innerHTML = html(TPL.dossier||[], function(d){
+    return '<div class="drow"><span class="k">'+esc(d.k)+'</span><span class="v"><span class="'+(d.ok?"ok":"")+'">'+esc(d.v)+'</span>'+(d.note?'<small>'+esc(d.note)+'</small>':'')+'</span></div>';
+  });
+
+  var st = TPL.styles||[];
+  document.getElementById("styleFn").textContent = TPL.styleFile || "CORE_ESSENCE.idx";
+  document.getElementById("styleSt").textContent = "// " + ("0"+st.length).slice(-2) + " ENTRIES";
+  document.getElementById("styleGrid").innerHTML = html(st, function(s,i){
+    return '<div class="style-card"><span class="no">TAG_0'+(i+1)+'</span><span class="label">#'+esc(s.label)+'</span><span class="note">'+esc(s.note)+'</span></div>';
+  });
+
+  var sc = TPL.scenes||[];
+  document.getElementById("sceneFn").textContent = TPL.sceneFile || "SCENARIO_SIM.log";
+  document.getElementById("sceneSt").textContent = "// " + ("0"+sc.length).slice(-2) + " LINES";
+  document.getElementById("sceneList").innerHTML = html(sc, function(s,i){
+    return '<div class="scene"><div class="sh"><span class="no">SC_0'+(i+1)+'</span><span class="nm">'+esc(s.nm)+'</span><span class="en">'+esc(s.en)+'</span></div><p class="line">'+esc(s.line)+'</p></div>';
+  });
+
+  var ct = TPL.sections||[];
+  document.getElementById("catsFn").textContent = TPL.catsFile || "CATEGORIES · DIRECTORY";
+  document.getElementById("catsSt").textContent = "// " + ("0"+ct.length).slice(-2) + " SECTIONS";
+  document.getElementById("sectionList").innerHTML = html(ct, function(s,i){
+    return '<button type="button" class="srow" data-idx="'+i+'"><span class="no">0'+(i+1)+'</span><span class="cn">'+esc(s.cn)+'</span><span class="en">'+esc(s.en)+'</span><span class="go">→</span></button>';
+  });
+
+  document.getElementById("poem").innerHTML = (TPL.poem||[]).map(function(p){ return "<span>"+esc(p)+"</span>"; }).join("");
+  document.getElementById("handleInput").placeholder = TPL.inputPlaceholder || "";
+  document.getElementById("enterBtn").innerHTML = (TPL.cta||"ENTER")+'&nbsp;<span class="arr">→</span>';
+
+  /* progress path */
+  (function(){
+    var el=document.getElementById("path"), h="";
+    ORDER.forEach(function(k,i){ if(i>0) h+='<span class="seg" data-i="'+i+'"></span>'; h+='<span class="node" data-i="'+i+'"></span>'; });
+    el.innerHTML=h;
+  })();
+})();
+
+/* ===== orbit particle ===== */
+var orbitCv = document.getElementById("orbitCanvas");
+var rafId = null, orbitRun = false;
+var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function setParticles(on){
+  orbitRun = on;
+  if(reduce) return;
+  if(on && rafId === null){ rafId = requestAnimationFrame(partFrame); }
+  if(!on && rafId !== null){ cancelAnimationFrame(rafId); rafId = null; }
+}
+var P = {W:0,H:0,cx:0,cy:0,parts:[]};
+function partSize(){
+  if(!orbitCv) return;
+  P.W = orbitCv.width = orbitCv.offsetWidth;
+  P.H = orbitCv.height = orbitCv.offsetHeight;
+  P.cx = P.W/2; P.cy = P.H*0.46;
+}
+function partBuild(){
+  P.parts = [];
+  var base = Math.min(P.cx, P.cy) * 0.94, i;
+  for(i=0;i<8;i++) P.parts.push({r:base, sp:1.0+(i%3)*0.35, off:(i/8)*Math.PI*2, big:(i%2?1.7:1.0), a:0.45+(i%3)*0.18, dir:(i%2?1:-1)});
+  for(i=0;i<6;i++) P.parts.push({r:base*0.60, sp:1.1+(i%2)*0.3, off:(i/6)*Math.PI*2, big:0.9, a:0.30, dir:1});
+}
+function partFrame(t){
+  var ctx = orbitCv.getContext("2d");
+  ctx.clearRect(0,0,P.W,P.H);
+  for(var i=0;i<P.parts.length;i++){
+    var p=P.parts[i], an=p.off + p.dir*(t*0.00042*p.sp);
+    var x=P.cx+Math.cos(an)*p.r, y=P.cy+Math.sin(an)*p.r;
+    var pulse=0.55+0.45*Math.sin(t*0.0012+p.off*7);
+    ctx.beginPath(); ctx.arc(x,y,p.big,0,Math.PI*2);
+    ctx.fillStyle="rgba(231,229,223,"+(p.a*pulse).toFixed(3)+")";
+    ctx.fill();
+  }
+  rafId = requestAnimationFrame(partFrame);
+}
+if(orbitCv){ partSize(); partBuild(); window.addEventListener("resize",function(){ partSize(); partBuild(); });
+  if(reduce){ partFrame(0); cancelAnimationFrame(rafId); rafId=null; } }
+
+/* ===== BGM ===== */
+var bgmCfg = TPL.bgm || {};
+var audio = null;
+var musicBtn = document.getElementById("musicBtn");
+(function(){
+  if(!bgmCfg.enable || !bgmCfg.url){ musicBtn.style.display = "none"; return; }
+  audio = new Audio(bgmCfg.url);
+  audio.loop = true;
+  audio.preload = "none";
+  musicBtn.addEventListener("click", function(){
+    if(audio.paused){
+      audio.play().then(function(){
+        musicBtn.dataset.on = "1";
+        showToast("播放 · " + (bgmCfg.label||"BGM"));
+      }).catch(function(){ showToast("无法播放音频，请检查 BGM 地址"); });
+    } else {
+      audio.pause(); musicBtn.dataset.on = "";
+    }
+  });
+})();
+
+/* ===== deck flip ===== */
+var deck = document.getElementById("deck");
+var current = 1, total = 5, flipping = false;
+var ringsEl = document.querySelector(".bg-rings");
+function bgShift(dir){
+  if(reduce) return;
+  ringsEl.style.transition = "transform .62s cubic-bezier(.72,.01,.27,1)";
+  ringsEl.style.transform = "translateX(" + (-dir*14) + "px)";
+  clearTimeout(ringsEl._t);
+  ringsEl._t = setTimeout(function(){ ringsEl.style.transform = ""; }, 640);
+}
+function syncUI(step){
+  current = step;
+  deck.style.transform = "translateX(-" + ((current-1)*100) + "%)";
+  var detail = step === 6;
+  document.querySelectorAll(".nav-top button").forEach(function(n){
+    var hit = detail ? (n.dataset.step==5) : (n.dataset.step==step);
+    n.dataset.on = hit ? "on":"";
+  });
+  document.getElementById("browserSect").innerHTML = detail ? "SECTOR <b>DS</b> · 详情" : ("SECTOR <b>0"+step+"</b>/05");
+  document.getElementById("stepNo").textContent = detail ? "DS" : "0"+step;
+  document.getElementById("stepName").textContent = detail ? "栏目详情" : NAMES[ORDER[step-1]];
+  if(detail){
+    document.getElementById("nextBtn").innerHTML = 'BACK<span class="cap">返回栏目</span>←';
+    document.getElementById("prevBtn").innerHTML = "← BACK";
+  } else {
+    var cap = step<total ? ("下一页 · "+TPL.nav[step]) : "回到初见 · RESTART";
+    document.getElementById("nextBtn").innerHTML = (step<total?"NEXT":"RESTART")+'<span class="cap">'+cap+'</span>'+(step<total?"→":"");
+    document.getElementById("prevBtn").innerHTML = "← PREV";
+  }
+  document.querySelectorAll(".path .seg,.path .node").forEach(function(p){
+    p.dataset.on = (detail || +p.dataset.i <= step-1) ? "on":"";
+  });
+}
+function flipTo(step){
+  if(flipping) return;
+  step = Math.max(1, Math.min(6, step));
+  if(step === current){ return; }
+  flipping = true;
+  var dir = step > current ? 1 : -1;
+  deck.classList.add("slide-left");
+  bgShift(dir);
+  setParticles(step === 1);
+  syncUI(step);
+  var pg = document.getElementById(step===6 ? "page-detail" : ("page-" + ORDER[step-1]));
+  if(pg){ pg.classList.remove("reveal"); void pg.offsetWidth; pg.classList.add("reveal"); }
+  setTimeout(function(){ deck.classList.remove("slide-left"); flipping=false; }, 700);
+}
+function flipNext(){ flipTo(current>=6 ? 1 : current+1); }
+function flipPrev(){ flipTo(current>1 ? current-1 : 5); }
+
+document.querySelectorAll(".nav-top button").forEach(function(n){
+  n.addEventListener("click", function(){ flipTo(+n.dataset.step); });
+});
+document.querySelectorAll(".path .node").forEach(function(n){
+  n.addEventListener("click", function(){ flipTo(+n.dataset.i+1); });
+});
+document.getElementById("prevBtn").addEventListener("click", function(){ if(current===6){ flipTo(5); } else { flipPrev(); } });
+document.getElementById("nextBtn").addEventListener("click", function(){ if(current===6){ flipTo(5); } else { flipNext(); } });
+document.getElementById("enterBtn").addEventListener("click", function(){
+  var val = document.getElementById("handleInput").value.trim();
+  showToast(val ? ("已记录：小姐 "+val+"，通道已开启") : "请输入您的称呼再进入");
+  flipTo(1);
+});
+document.querySelectorAll("#sectionList .srow").forEach(function(r){
+  r.addEventListener("click", function(){ openSection(+r.dataset.idx); });
+});
+
+/* ===== 栏目子页 · 金山文档链接 ===== */
+var linkListEl = document.getElementById("linkList");
+var detailLinks = [];           // 当前栏目文档链接 {title,url}
+function openSection(idx){
+  var s = TPL.sections[idx];
+  document.getElementById("detailFn").textContent = s.cn + " · " + s.en;
+  detailLinks = (s.links||[]).map(function(l){ return {title:l.title||"文档", url:l.url}; });
+  renderLinks();
+  flipTo(6);
+}
+function renderLinks(){
+  if(detailLinks.length){
+    linkListEl.classList.remove("empty");
+    linkListEl.innerHTML = detailLinks.map(function(l,i){
+      return '<a class="link-row" href="'+esc(l.url)+'" target="_blank" rel="noopener" data-i="'+i+'">'+
+        '<span class="ic"><svg viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v4h4"/><path d="M9 13h6M9 17h4"/></svg></span>'+
+        '<span class="bd"><span class="t">'+esc(l.title)+'</span><span class="u">'+esc(l.url)+'</span></span>'+
+        '<span class="go">↗</span>'+
+        '<button type="button" class="del" data-i="'+i+'" aria-label="删除">×</button>'+
+      '</a>';
+    }).join("");
+  } else {
+    linkListEl.classList.add("empty");
+    linkListEl.innerHTML = "";
+  }
+}
+linkListEl.addEventListener("click", function(e){
+  var del = e.target.closest(".del");
+  if(del){
+    e.preventDefault(); e.stopPropagation();
+    detailLinks.splice(+del.dataset.i, 1); renderLinks();
+  }
+});
+document.getElementById("addLinkBtn").addEventListener("click", function(){
+  var t = prompt("链接标题（如：须知一）");
+  if(!t || !t.trim()) return;
+  var u = prompt("金山文档链接（https://www.kdocs.cn/l/… 或 kdocs 短链）");
+  if(!u || !u.trim()) return;
+  detailLinks.push({title:t.trim(), url:u.trim()});
+  renderLinks();
+});
+document.getElementById("backBtn").addEventListener("click", function(){ flipTo(5); });
+
+/* swipe */
+var sx=0, sy=0;
+document.querySelector(".stage").addEventListener("touchstart", function(e){ sx=e.touches[0].clientX; sy=e.touches[0].clientY; }, {passive:true});
+document.querySelector(".stage").addEventListener("touchend", function(e){
+  var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+  if(Math.abs(dx)>60 && Math.abs(dx)>Math.abs(dy)*1.4){ if(dx<0) flipNext(); else flipPrev(); }
+}, {passive:true});
+
+/* keyboard */
+document.addEventListener("keydown", function(e){
+  if(e.key==="ArrowRight"||e.key==="PageDown") flipNext();
+  if(e.key==="ArrowLeft"||e.key==="PageUp") flipPrev();
+});
+
+/* toast */
+var tb;
+function showToast(msg){
+  if(!tb){ tb=document.createElement("div"); tb.style.cssText="position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:9;background:#e7e5df;color:#0a0a0b;font-family:'JetBrains Mono',monospace;font-size:12px;padding:10px 18px;border-radius:8px;opacity:0;transition:.3s;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;"; document.body.appendChild(tb); }
+  tb.textContent=msg; tb.style.opacity="1";
+  clearTimeout(tb._t); tb._t=setTimeout(function(){ tb.style.opacity="0"; },2200);
+}
+
+syncUI(1);
+setParticles(true);
+</script>
+</body>
+</html>
